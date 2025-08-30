@@ -4,6 +4,7 @@ import { EllipsisVertical, ShoppingCart, UserIcon } from 'lucide-react'
 import Link from 'next/link';
 import ModeToggle from './mode-toggle';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import UserButton from './user-button';
 
 export default function Menu() {
     return (
@@ -17,11 +18,7 @@ export default function Menu() {
                     </Link>
                 </Button>
 
-                <Button asChild>
-                    <Link href='/sign-in' >
-                        <UserIcon />Sign In
-                    </Link>
-                </Button>
+                <UserButton />
             </nav>
 
             <nav className="md:hidden">
@@ -34,17 +31,14 @@ export default function Menu() {
                         <SheetTitle>Menu</SheetTitle>
 
                         <ModeToggle />
+
                         <Button asChild variant="ghost">
                             <Link href='/cart' >
                                 <ShoppingCart />Cart
                             </Link>
                         </Button>
 
-                        <Button asChild>
-                            <Link href='/sign-in' >
-                                <UserIcon />Sign In
-                            </Link>
-                        </Button>
+                        <UserButton />
 
                         <SheetDescription></SheetDescription>
                     </SheetContent>
