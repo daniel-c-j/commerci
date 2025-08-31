@@ -1,31 +1,21 @@
-// // src/middleware.ts
-// import { NextRequest, NextResponse } from "next/server";
-// import { auth } from "./auth";
+import { NextRequest, NextResponse } from "next/server";
 
-// export default async function middleware(request: NextRequest) {
-//   console.log("123456");
+export async function middleware(request: NextRequest) {
+  // Check for session cart cookie
+  if (!request.cookies.get("sessionCartId")) {
+    const sessionCartId = crypto.randomUUID();
 
-//   const requestHeaders = new Headers(request.headers);
-//   requestHeaders.set("x-pathname", request.nextUrl.pathname);
+    // Clone the req headers
+    const response = NextResponse.next({
+      request: {
+        headers: new Headers(request.headers),
+      },
+    });
 
-//   const query = request.nextUrl.searchParams;
-//   const redirectUrl = query.get("redirect_url");
+    // Set newly generated SessioncartId in the response cookie.
+    response.cookies.set("sessionCartId", sessionCartId);
+    return response;
+  }
 
-//   requestHeaders.set("x-search-params", request.nextUrl.search);
-
-//   if (redirectUrl) {
-//     requestHeaders.set("x-redirect-url", redirectUrl);
-//   }
-
-//   return NextResponse.next({
-//     request: {
-//       headers: requestHeaders,
-//     },
-//   });
-// }
-
-// export const config = {
-//   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-// };
-
-export { auth as middleware } from "@/auth";
+  return NextResponse.next();
+}
