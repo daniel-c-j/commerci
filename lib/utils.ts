@@ -15,7 +15,10 @@ export function formatNumberWithDecimal(num: number): string {
   return floatVal ? `${intVal}.${floatVal.padEnd(2, "0")}` : `${intVal}.00`;
 }
 
-// format Errors
+// Format errors. For ZOD we're not using safeParse, but using try catch instead
+// since error/exception --ZOD or not-- will explicitly be globally handled in this
+// single block of code.
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function formatError(error: any) {
   if (error instanceof ZodError) {
@@ -49,4 +52,22 @@ export function round2(value: number | string) {
   } else {
     throw new Error("Value is not a number or a string");
   }
+}
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
+  minimumFractionDigits: 2,
+});
+
+export function formatCurrency(amount: number | string | null) {
+  if (typeof amount === "number") {
+    return CURRENCY_FORMATTER.format(amount);
+  }
+
+  if (typeof amount === "string") {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  }
+
+  return NaN;
 }

@@ -4,11 +4,13 @@ import Credentials from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
 
 import NextAuth from "next-auth";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
-    signIn: "/auth/sign-in",
-    error: "/auth/sign-in",
+    signIn: "/sign-in",
+    error: "/sign-in",
   },
   session: {
     strategy: "jwt",
@@ -62,8 +64,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return session;
     },
-    async jwt({ token, user, session }: any) {
+    async jwt({ token, user, session, trigger }: any) {
       if (user) {
+        token.id = user.id;
         token.role = user.role;
 
         // User has no name, use email.
@@ -79,6 +82,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           });
         }
+
+        if (trigger === "signIn" || trigger === "signUp") {
+          const cookiesObj = await cookies();
+          const sessionCartId = cookiesObj.get("sessionCartId")?.value;
+
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: { sessionCartId },
+            });
+
+            if (sessionCart) {
+              // delete current user cart
+              await prisma.cart.deleteMany({
+                where: { userId: user.id },
+              });
+
+              // Assign new cart
+              await prisma.cart.update({
+                where: { id: sessionCart.id },
+                data: { userId: user.id },
+              });
+            }
+          }
+        }
+      }
+
+      // Handle session updates
+      if (session?.user.name && trigger === "update") {
+        token.name = session.user.name;
       }
 
       return token;

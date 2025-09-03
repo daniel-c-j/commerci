@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import CredentialsSignInForm from '@/components/credentials-signin-form';
+import CredentialsSignInForm from '@/app/(auth)/sign-in/credentials-signin-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_NAME } from '@/lib/constants';
 import { Metadata } from 'next';

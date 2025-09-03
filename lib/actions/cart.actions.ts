@@ -1,6 +1,6 @@
 "use server";
 
-import { CartItem } from "@/types";
+import { Cart, CartItem } from "@/types";
 import { convertToPlainObj, formatError, isDev, round2 } from "../utils";
 import { cookies } from "next/headers";
 import { auth } from "@/auth";
@@ -34,7 +34,7 @@ export async function addItemToCart(data: CartItem) {
 
     // Get session and user ID
     const session = await auth();
-    const userId = session?.user?.id ? (session.user.id as string) : "";
+    const userId = session?.user?.id ? (session.user.id as string) : undefined;
 
     // Get cart
     const cart = await getMyCart();
