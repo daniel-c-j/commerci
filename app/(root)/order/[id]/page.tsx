@@ -17,9 +17,12 @@ export default async function OrderDetailsPage(props: { params: Promise<{ id: st
 
     return (
         <>
-            <OrderDetailsTable order={
-                { ...order, shippingAddress: order.shippingAddress as ShippingAddress }
-            } />
+            <OrderDetailsTable
+                order={
+                    { ...order, shippingAddress: order.shippingAddress as ShippingAddress }
+                }
+                paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
+            />
         </>
     )
 }

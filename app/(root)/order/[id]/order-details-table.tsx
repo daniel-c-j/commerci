@@ -6,9 +6,15 @@ import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Link from 'next/link';
 import Image from 'next/image';
+import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { approvePayPalOrder, createPayPalOrder } from '@/lib/actions/order.actions';
+import { toast } from 'sonner';
+import PayPalButtonsSection from './order-details-table-paypal';
 
-export default function OrderDetailsTable({ order }: { order: Order }) {
+
+export default function OrderDetailsTable({ order, paypalClientId }: { order: Order, paypalClientId: string }) {
     const { shippingAddress, shippingPrice, itemsPrice, taxPrice, orderitems, totalPrice, paymentMethod, isDelivered, isPaid, id, paidAt, deliveredAt, } = order;
+
 
     return (
         <div>
@@ -113,6 +119,11 @@ export default function OrderDetailsTable({ order }: { order: Order }) {
                                 <div className="">Total</div>
                                 <div className="">{formatCurrency(totalPrice)}</div>
                             </div>
+
+                            {/* PayPal Payment */}
+                            {!isPaid && paymentMethod === "PayPal" && (
+                                <PayPalButtonsSection orderId={order.id} paypalClientId={paypalClientId} />
+                            )}
                         </CardContent>
                     </Card>
                 </div>
