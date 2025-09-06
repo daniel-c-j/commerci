@@ -3,8 +3,6 @@ import "@/assets/styles/globals.css";
 import localFont from 'next/font/local'
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
-import Header from "@/components/shared/header";
-import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 
 
@@ -30,12 +28,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning >
       <body className={`${myFont.className}`}>
         <ThemeProvider attribute='class' defaultTheme="light" enableSystem disableTransitionOnChange>
-          <div className='flex h-screen flex-col'>
-            <Header />
-            <main className='flex-1 wrapper'>{children}</main>
-            <Footer />
-          </div>
-
+          {children}
           <Toaster />
         </ThemeProvider>
       </body>
