@@ -139,3 +139,9 @@ export function formUrlQuery({
     { skipNull: true }
   );
 }
+
+// Format number
+const NUMBER_FORMATTER = Intl.NumberFormat("en-US");
+export function formatNumber(number: number): string {
+  return NUMBER_FORMATTER.format(number);
+}

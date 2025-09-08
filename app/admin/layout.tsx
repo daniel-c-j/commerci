@@ -4,10 +4,9 @@ import Image from "next/image";
 import Menu from "@/components/shared/header/menu";
 import MainNav from "./main-nav";
 import { APP_NAME } from "@/lib/constants";
+import { Input } from "@/components/ui/input";
 
-
-
-export default function UserLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
     return (
         <>
             <div className="flex flex-col">
@@ -20,6 +19,10 @@ export default function UserLayout({ children }: Readonly<{ children: React.Reac
                         <MainNav className="mx-6" />
 
                         <div className="ml-auto items-center flex space-x-4">
+                            <div>
+                                <Input type="search" placeholder="Search..." className="md:w-[100px] lg:w-[300px]" />
+                            </div>
+
                             <Menu />
                         </div>
                     </div>

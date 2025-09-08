@@ -2,18 +2,16 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency, formatDateTime, formatId } from '@/lib/utils'
 import { Order } from '@/types'
-import React from 'react'
+import React, { useTransition } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import { approvePayPalOrder, createPayPalOrder } from '@/lib/actions/order.actions';
-import { toast } from 'sonner';
-import PayPalButtonsSection from './order-details-table-paypal';
+import { MarkAsDeliveredButton, MarkAsPaidButton, PayPalButtonsSection } from './order-details-table-buttons';
 
 
-export default function OrderDetailsTable({ order, paypalClientId }: { order: Order, paypalClientId: string }) {
+export default function OrderDetailsTable({ order, paypalClientId, isAdmin }: { order: Order, paypalClientId: string, isAdmin: boolean }) {
     const { shippingAddress, shippingPrice, itemsPrice, taxPrice, orderitems, totalPrice, paymentMethod, isDelivered, isPaid, id, paidAt, deliveredAt, } = order;
+
 
 
     return (
@@ -123,6 +121,15 @@ export default function OrderDetailsTable({ order, paypalClientId }: { order: Or
                             {/* PayPal Payment */}
                             {!isPaid && paymentMethod === "PayPal" && (
                                 <PayPalButtonsSection orderId={order.id} paypalClientId={paypalClientId} />
+                            )}
+
+                            {/* COD */}
+                            {isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
+                                <MarkAsPaidButton orderId={order.id} />
+                            )}
+
+                            {isAdmin && isPaid && !isDelivered && (
+                                <MarkAsDeliveredButton orderId={order.id} />
                             )}
                         </CardContent>
                     </Card>
