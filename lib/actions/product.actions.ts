@@ -2,7 +2,10 @@
 
 import prisma from "@/db/prisma";
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "../constants";
-import { convertToPlainObj } from "../utils";
+import { convertToPlainObj, formatError } from "../utils";
+import { insertProductSchema, updateProductSchema } from "../validators";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 // Get latest products
 export async function getLatestProducts() {
@@ -41,4 +44,47 @@ export async function getAllProducts({
   const dataCount = await prisma.product.count();
 
   return { data, totalPages: Math.ceil(dataCount / limit) };
+}
+
+// Create Product
+export async function createProduct(data: z.infer<typeof insertProductSchema>) {
+  try {
+    // Validate and create product
+    const product = insertProductSchema.parse(data);
+    await prisma.product.create({ data: product });
+
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      message: "Product created successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// Update Product
+export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
+  try {
+    // Validate and find product
+    const product = updateProductSchema.parse(data);
+    const productExists = await prisma.product.findFirst({
+      where: { id: product.id },
+    });
+
+    if (!productExists) throw new Error("Product not found");
+
+    // Update product
+    await prisma.product.update({ where: { id: product.id }, data: product });
+
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      message: "Product updated successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 }
