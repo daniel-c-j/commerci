@@ -3,6 +3,7 @@
 import React, { useState, useTransition } from 'react'
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 export default function DeleteDialog({ id, action }: { id: string, action: (id: string) => Promise<{ success: boolean, message: string }> }) {
     const [isPending, startTransition] = useTransition()

@@ -4,7 +4,7 @@ export const APP_DESCRIPTION =
 export const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 export const LATEST_PRODUCTS_LIMIT =
-  Number(process.env.LATEST_PRODUCTS_LIMIT) || 4;
+  Number(process.env.LATEST_PRODUCTS_LIMIT) || 8;
 
 export const SIGN_IN_DEFAULT_VALUES = {
   email: "",
@@ -33,7 +33,7 @@ export const PAYMENT_METHODS = process.env.PAYMENT_METHOD
 export const PAYMENT_METHOD_DEFAULT =
   process.env.PAYMENT_METHOD_DEFAULT || "PayPal";
 
-export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 2;
+export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;
 
 export const productDefaultValues = {
   name: "",

@@ -14,14 +14,15 @@ export const metadata: Metadata = {
     title: "Admin Orders"
 }
 
-export default async function AdminOrdersPage(props: Promise<{ page: string }>) {
+export default async function OrdersPage(props: {
+    searchParams: Promise<{ page: string }>;
+}) {
     await requireAdmin();
+    const { page = '1' } = await props.searchParams;
 
-    const { page } = await props;
     const orders = await getAllOrders({
         page: Number(page),
-        limit: 2
-    })
+    });
 
     return (
         <div className="space-y-2">

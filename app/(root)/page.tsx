@@ -12,7 +12,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <ProductList data={latestProducts} title="Products" limit={4} />
+      <ProductList data={latestProducts} title="Products" />
     </div>
   );
 }

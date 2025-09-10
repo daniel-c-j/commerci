@@ -24,6 +24,13 @@ export async function getProductBySlug(slug: string) {
   });
 }
 
+export async function getProductById(id: string) {
+  const data = await prisma.product.findFirst({
+    where: { id },
+  });
+  return convertToPlainObj(data);
+}
+
 // Get all products
 export async function getAllProducts({
   query,
@@ -83,6 +90,28 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
     return {
       success: true,
       message: "Product updated successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// Delete Product
+export async function deleteProduct(id: string) {
+  try {
+    const productExists = await prisma.product.findFirst({
+      where: { id },
+    });
+
+    if (!productExists) throw new Error("Product not found");
+
+    await prisma.product.delete({ where: { id } });
+
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      message: "Product deleted successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
