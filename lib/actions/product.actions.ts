@@ -9,12 +9,16 @@ import { z } from "zod";
 
 // Get latest products
 export async function getLatestProducts() {
-  const data = await prisma.product.findMany({
-    take: LATEST_PRODUCTS_LIMIT,
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    const data = await prisma.product.findMany({
+      take: LATEST_PRODUCTS_LIMIT,
+      orderBy: { createdAt: "desc" },
+    });
 
-  return convertToPlainObj(data);
+    return convertToPlainObj(data);
+  } catch (e) {
+    return [];
+  }
 }
 
 // Get product by it's slug
@@ -44,7 +48,7 @@ export async function getAllProducts({
   category?: string;
 }) {
   const data = await prisma.product.findMany({
-    // where:{name:{contains: query}},
+    where: { name: { contains: query, mode: "insensitive" } },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -117,4 +121,25 @@ export async function deleteProduct(id: string) {
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
+}
+
+// Get all categories
+export async function getAllProductCategories() {
+  const data = await prisma.product.groupBy({
+    by: ["category"],
+    _count: true,
+  });
+
+  return data;
+}
+
+// Get featured products
+export async function getFeaturedProducts() {
+  const data = await prisma.product.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: "desc" },
+    take: 4,
+  });
+
+  return convertToPlainObj(data);
 }

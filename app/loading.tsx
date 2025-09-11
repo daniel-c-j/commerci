@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const LoadingPage = () => {
     return (
-        <div className="flex justify-center items-center w-[80vw] h-[70vh]">
+        <div className="flex justify-center items-center w-[100vw] h-[100vh]">
             <Image src={loader} height={100} width={100} alt="Loading..." unoptimized />
         </div>
     );

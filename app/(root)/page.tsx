@@ -1,5 +1,6 @@
+import ProductCarousel from "@/components/shared/product/product-carousel";
 import ProductList from "@/components/shared/product/product-list";
-import { getLatestProducts } from "@/lib/actions/product.actions";
+import { getFeaturedProducts, getLatestProducts } from "@/lib/actions/product.actions";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,10 +9,11 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const latestProducts = await getLatestProducts();
-  // await new Promise((resolve) => setTimeout(resolve, 1200));
+  const featuredProducts = await getFeaturedProducts();
 
   return (
     <div>
+      {featuredProducts.length > 0 && <ProductCarousel data={featuredProducts} />}
       <ProductList data={latestProducts} title="Products" />
     </div>
   );
