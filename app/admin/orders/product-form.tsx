@@ -8,15 +8,15 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { ControllerRenderProps, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from "zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form';
 import slugify from 'slugify';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
+import { Input } from '../../../components/ui/input';
+import { Button } from '../../../components/ui/button';
+import { Textarea } from '../../../components/ui/textarea';
 import { createProduct, updateProduct } from '@/lib/actions/product.actions';
 import { toast } from 'sonner';
-import { Card, CardContent } from '../ui/card';
-import { Checkbox } from '../ui/checkbox';
+import { Card, CardContent } from '../../../components/ui/card';
+import { Checkbox } from '../../../components/ui/checkbox';
 import Image from 'next/image';
 
 export function ProductFormCreate() {

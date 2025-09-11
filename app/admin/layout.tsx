@@ -4,7 +4,7 @@ import Image from "next/image";
 import Menu from "@/components/shared/header/menu";
 import MainNav from "./main-nav";
 import { APP_NAME } from "@/lib/constants";
-import { Input } from "@/components/ui/input";
+import AdminSearch from "@/components/shared/admin/admin-search";
 
 export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
     return (
@@ -19,9 +19,7 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
                         <MainNav className="mx-6" />
 
                         <div className="ml-auto items-center flex space-x-4">
-                            <div>
-                                <Input type="search" placeholder="Search..." className="md:w-[100px] lg:w-[300px]" />
-                            </div>
+                            <AdminSearch />
 
                             <Menu />
                         </div>

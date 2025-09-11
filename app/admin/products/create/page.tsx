@@ -1,4 +1,4 @@
-import { ProductFormCreate } from '@/components/admin/product-form'
+import { ProductFormCreate } from '@/app/admin/orders/product-form'
 import { Metadata } from 'next'
 import React from 'react'
 

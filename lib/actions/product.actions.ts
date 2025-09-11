@@ -44,6 +44,7 @@ export async function getAllProducts({
   category?: string;
 }) {
   const data = await prisma.product.findMany({
+    // where:{name:{contains: query}},
     skip: (page - 1) * limit,
     take: limit,
   });

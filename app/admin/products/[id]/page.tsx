@@ -1,4 +1,4 @@
-import { ProductFormUpdate } from '@/components/admin/product-form';
+import { ProductFormUpdate } from '@/app/admin/orders/product-form';
 import { getProductById } from '@/lib/actions/product.actions';
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation';
