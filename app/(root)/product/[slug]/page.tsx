@@ -9,6 +9,7 @@ import { getProductBySlug } from '@/lib/actions/product.actions';
 import { notFound } from 'next/navigation';
 import React from 'react'
 import ReviewList from './review-list';
+import Rating from '@/components/shared/product/rating';
 
 export default async function ProductDetailPage(props: { params: Promise<{ slug: string }> }) {
     const { slug } = await props.params;
@@ -37,7 +38,8 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
                             <h1 className='h3-bold'>{product.name}</h1>
 
-                            <p>{product.rating} of {product.numReviews} Reviews</p>
+                            <Rating value={Number(product.rating)} />
+                            <p>{product.numReviews} reviews</p>
 
                             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                                 <ProductPrice value={Number(product.price)} className='w-24 rounded-full bg-green-100 text-green-700 px-5 py-2' />

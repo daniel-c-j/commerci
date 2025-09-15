@@ -14,8 +14,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { StarIcon } from 'lucide-react'
 import { toast } from 'sonner'
-import { createUpdateReview } from '@/lib/actions/review.action'
-import { Review } from '@/types'
+import { createUpdateReview, getReviewByProductId } from '@/lib/actions/review.action'
 
 export default function ReviewForm({ userId, productId, onReviewSubmitting }: { userId: string, productId: string, onReviewSubmitting: () => void }) {
     const [open, setOpen] = useState(false)
@@ -25,9 +24,16 @@ export default function ReviewForm({ userId, productId, onReviewSubmitting }: { 
         defaultValues: reviewFormDefaultValues
     })
 
-    const handleOpenForm = () => {
+    const handleOpenForm = async () => {
         form.setValue('productId', productId);
         form.setValue('userId', userId);
+
+        const review = await getReviewByProductId({ productId })
+        if (review) {
+            form.setValue("title", review.title)
+            form.setValue("description", review.description)
+            form.setValue("rating", review.rating)
+        }
 
         setOpen(true);
     }
