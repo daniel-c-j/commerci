@@ -16,7 +16,7 @@ export const insertProductSchema = z.object({
   category: z.string().min(3, "Name must be at least 3 characters"),
   brand: z.string().min(3, "Name must be at least 3 characters"),
   description: z.string().min(3, "Name must be at least 3 characters"),
-  stock: z.number(),
+  stock: z.coerce.number<number>(),
   images: z.array(z.string()).min(1, "Product must have at least one image"),
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
@@ -129,4 +129,17 @@ export const updateProfileSchema = z.object({
 export const updateUserSchema = updateProfileSchema.extend({
   id: z.string().min(1, "Id is required"),
   role: z.string().min(1, "Role is required"),
+});
+
+// Schema to insert reviews
+export const insertReviewSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 characters"),
+  description: z.string().min(3, "Description must be at least 3 characters"),
+  productId: z.string().min(1, "Product is required"),
+  userId: z.string().min(1, "User is required"),
+  rating: z.coerce
+    .number<number>()
+    .int()
+    .min(1, "Rating must be at least 1")
+    .max(5, "Rating must be at most 5"),
 });

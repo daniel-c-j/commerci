@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import AddToCart from '@/components/shared/product/add-to-cart';
 import ProductImages from '@/components/shared/product/product-images';
 import ProductPrice from '@/components/shared/product/product-price';
@@ -7,12 +8,16 @@ import { getMyCart } from '@/lib/actions/cart.actions';
 import { getProductBySlug } from '@/lib/actions/product.actions';
 import { notFound } from 'next/navigation';
 import React from 'react'
+import ReviewList from './review-list';
 
 export default async function ProductDetailPage(props: { params: Promise<{ slug: string }> }) {
     const { slug } = await props.params;
 
     const product = await getProductBySlug(slug);
     if (!product) notFound();
+
+    const session = await auth();
+    const userId = session?.user?.id;
 
     const cart = await getMyCart();
 
@@ -79,6 +84,12 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         </Card>
                     </div>
                 </div>
+            </section>
+
+            <section className='mt-10'>
+                <h2 className="h2-bold">Customer Reviews</h2>
+
+                <ReviewList userId={userId || ""} productId={product.id} productSlug={product.slug} />
             </section>
         </>
     )
