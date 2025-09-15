@@ -6,6 +6,7 @@ import { convertToPlainObj, formatError } from "../utils";
 import { insertProductSchema, updateProductSchema } from "../validators";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { Prisma } from "../generated/prisma";
 
 // Get latest products
 export async function getLatestProducts() {
@@ -41,14 +42,50 @@ export async function getAllProducts({
   limit = PAGE_SIZE,
   page,
   category,
+  rating,
+  sort,
+  price,
 }: {
   query: string;
   limit?: number;
   page: number;
   category?: string;
+  rating?: string;
+  sort?: string;
+  price?: string;
 }) {
+  // Query filter
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== "all"
+      ? {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          } as Prisma.StringFilter,
+        }
+      : {};
+
+  // Category filter
+  const catgFilter: Prisma.ProductWhereInput =
+    category && category !== "all" ? { category } : {};
+
+  // Price filter
+  const priceFilter: Prisma.ProductWhereInput =
+    price && price !== "all"
+      ? {
+          price: {
+            gte: Number(price.split("-")[0]),
+            lte: Number(price.split("-")[1]),
+          },
+        }
+      : {};
+
+  // Rating filter
+  const ratingFilter: Prisma.ProductWhereInput =
+    rating && rating !== "all" ? { rating: { gte: Number(rating) } } : {};
+
   const data = await prisma.product.findMany({
-    where: { name: { contains: query, mode: "insensitive" } },
+    where: { ...queryFilter, ...catgFilter, ...priceFilter, ...ratingFilter },
     skip: (page - 1) * limit,
     take: limit,
   });

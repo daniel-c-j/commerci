@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Menu from './menu';
 import CategoryDrawer from './category-drawer';
+import SearchBar from './search';
 
 const Header = () => {
     return (<header className='w-full border-b'>
@@ -18,6 +19,11 @@ const Header = () => {
                     </span>
                 </Link>
             </div>
+
+            <div className='hidden md:block'>
+                <SearchBar />
+            </div>
+
             <Menu />
         </div>
     </header>);
