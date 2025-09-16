@@ -3,6 +3,7 @@ import Pagination from '@/components/shared/pagination';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { deleteProduct, getAllProducts } from '@/lib/actions/product.actions';
+import { requireAdmin } from '@/lib/auth-guard';
 import { formatCurrency, formatId } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react'

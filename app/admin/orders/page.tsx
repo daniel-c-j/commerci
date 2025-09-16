@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 export default async function OrdersPage(props: {
     searchParams: Promise<{ page: string, query: string }>;
 }) {
-    await requireAdmin();
     const { page = '1', query: searchText } = await props.searchParams;
 
     const orders = await getAllOrders({

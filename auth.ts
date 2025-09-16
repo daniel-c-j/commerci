@@ -5,7 +5,7 @@ import { compareSync } from "bcrypt-ts-edge";
 
 import NextAuth from "next-auth";
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
+import { authConfig } from "./auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/sign-in",
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
     maxAge: 30 * 24 * 60 * 60, // ? 30 days
   },
   adapter: PrismaAdapter(prisma),
@@ -115,7 +115,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
-    // async authorized({ request, auth }: any) {
-    // },
+    ...authConfig.callbacks,
   },
 });

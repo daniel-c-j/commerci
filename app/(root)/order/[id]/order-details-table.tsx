@@ -9,10 +9,8 @@ import Image from 'next/image';
 import { MarkAsDeliveredButton, MarkAsPaidButton, PayPalButtonsSection } from './order-details-table-buttons';
 
 
-export default function OrderDetailsTable({ order, paypalClientId, isAdmin }: { order: Order, paypalClientId: string, isAdmin: boolean }) {
+export default function OrderDetailsTable({ order, paypalClientId, isAdmin }: { order: Omit<Order, 'paymentResult'>, paypalClientId: string, isAdmin: boolean }) {
     const { shippingAddress, shippingPrice, itemsPrice, taxPrice, orderitems, totalPrice, paymentMethod, isDelivered, isPaid, id, paidAt, deliveredAt, } = order;
-
-
 
     return (
         <div>

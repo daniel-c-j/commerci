@@ -1,5 +1,6 @@
 import { ProductFormUpdate } from '@/app/admin/orders/product-form';
 import { getProductById } from '@/lib/actions/product.actions';
+import { requireAdmin } from '@/lib/auth-guard';
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation';
 import React from 'react'

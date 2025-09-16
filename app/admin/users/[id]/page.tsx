@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation';
 import React from 'react'
 import UserUpdateForm from './user-update-form';
+import { requireAdmin } from '@/lib/auth-guard';
 
 export const metadata: Metadata = {
     title: "Update User"

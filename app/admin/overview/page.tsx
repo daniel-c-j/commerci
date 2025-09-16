@@ -14,8 +14,6 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminOverviewPage() {
-    await requireAdmin();
-
     const summary = await getOrderSummary()
 
     return (
